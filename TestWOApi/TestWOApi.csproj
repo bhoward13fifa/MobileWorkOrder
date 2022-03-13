@@ -25,8 +25,8 @@
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2337" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\WorkOrderAPI\WorkOrderDataManager.Library\WorkOrderDataManager.Library.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\WorkOrderDataManager.Library\WorkOrderDataManager.Library.csproj" />
+	</ItemGroup>
 
 </Project>
