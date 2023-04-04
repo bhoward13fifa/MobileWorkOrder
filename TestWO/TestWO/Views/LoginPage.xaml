@@ -8,10 +8,14 @@
              x:Class="TestWO.Views.LoginPage"
              Shell.NavBarIsVisible="False">
     <ContentPage.Content>
-        <StackLayout Padding="10,0,10,0" VerticalOptions="Center">
-            <Entry x:Name="UserName" Text="{Binding UserName}" Placeholder="Username"/>
-            <Entry x:Name="Password" Text="{Binding Password}" Placeholder="Password"/>
-            <Button VerticalOptions="Center" Text="Login" Command="{Binding LoginCommand}"/>
+        <StackLayout Margin="35" Spacing="50" VerticalOptions="Center">
+            <Image Source="https://lh3.googleusercontent.com/p/AF1QipMOGlsgR41zEEF1Je-BLCLRR1ne8vwVUTD5ejQf=s680-w680-h510"
+                   HeightRequest="250" WidthRequest="250"/>
+            <StackLayout Padding="10,0,10,0" VerticalOptions="Center">
+                <Entry x:Name="UserName" Text="{Binding UserName}" Placeholder="Username"/>
+                <Entry x:Name="Password" Text="{Binding Password}" Placeholder="Password" IsPassword="True"/>
+                <Button VerticalOptions="Center" Text="Login" Command="{Binding LoginCommand}"/>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

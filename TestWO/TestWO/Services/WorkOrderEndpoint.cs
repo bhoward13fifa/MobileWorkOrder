@@ -34,5 +34,21 @@ namespace TestWO.Services
                 }
             }
         }
+
+        public async Task<List<WorkOrderDBModel>> GetAllWorkOrders()
+        {
+            using (HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync("/api/WorkOrder"))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsAsync<List<WorkOrderDBModel>>();
+                    return result;
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+        }
     }
 }

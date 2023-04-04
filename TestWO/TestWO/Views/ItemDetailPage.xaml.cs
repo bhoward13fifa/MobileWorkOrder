@@ -6,10 +6,20 @@ namespace TestWO.Views
 {
     public partial class ItemDetailPage : ContentPage
     {
+        private readonly ItemDetailViewModel viewModel;
         public ItemDetailPage()
         {
             InitializeComponent();
-            BindingContext = new ItemDetailViewModel();
+            viewModel = new ItemDetailViewModel();
+            BindingContext = viewModel;
+        }
+
+        protected override void OnAppearing()
+        {
+            if (BindingContext is ItemDetailViewModel viewModel)
+            {
+                viewModel.OnAppeared();
+            }
         }
     }
 }

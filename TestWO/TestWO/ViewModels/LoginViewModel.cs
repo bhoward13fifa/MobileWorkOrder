@@ -104,7 +104,7 @@ namespace TestWO.ViewModels
 
                 await _apiHelper.GetLoggedInUserInfo(result.Access_Token);
 
-                await Shell.Current.GoToAsync($"//{nameof(AboutPage)}");
+                await Shell.Current.GoToAsync($"//{nameof(ItemsPage)}");
             }
             catch (Exception ex)
             {

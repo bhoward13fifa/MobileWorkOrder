@@ -88,7 +88,7 @@ namespace TestWO.ViewModels
             set
             {
                 _startTime = value;
-                OnPropertyChanged();
+                OnPropertyChanged("StartTime");
             }
         }
 
@@ -100,7 +100,7 @@ namespace TestWO.ViewModels
             set
             {
                 _endTime = value;
-                OnPropertyChanged();
+                OnPropertyChanged("EndTime");
             }
         }
 
@@ -112,7 +112,7 @@ namespace TestWO.ViewModels
             set
             {
                 _customers = value;
-                OnPropertyChanged();
+                OnPropertyChanged("Customers");
             }
         }
 
@@ -124,7 +124,7 @@ namespace TestWO.ViewModels
             set
             {
                 _employees = value;
-                OnPropertyChanged();
+                OnPropertyChanged("Employees");
             }
 
         }
@@ -137,7 +137,7 @@ namespace TestWO.ViewModels
             set
             {
                 _products = value;
-                OnPropertyChanged();
+                OnPropertyChanged("Products");
             }
         }
 
@@ -149,7 +149,7 @@ namespace TestWO.ViewModels
             set
             {
                 _images = value;
-                OnPropertyChanged();
+                OnPropertyChanged("Images");
             }
         }
 
@@ -161,7 +161,7 @@ namespace TestWO.ViewModels
             set
             {
                 _imageFileName = value;
-                OnPropertyChanged();
+                OnPropertyChanged("Images");
             }
         }
 
@@ -173,7 +173,7 @@ namespace TestWO.ViewModels
             set
             {
                 _imageData = value;
-                OnPropertyChanged();
+                OnPropertyChanged("Images");
             }
         }
 
@@ -184,7 +184,7 @@ namespace TestWO.ViewModels
             set
             {
                 _productQuantity = value;
-                OnPropertyChanged();
+                OnPropertyChanged("Products");
             }
         }
 
@@ -196,7 +196,7 @@ namespace TestWO.ViewModels
             set
             {
                 _workDescription = value;
-                OnPropertyChanged();
+                OnPropertyChanged("WorkDescription");
             }
         }
 
@@ -208,7 +208,8 @@ namespace TestWO.ViewModels
             set
             {
                 _selectedEmployee = value;
-                OnPropertyChanged();
+                OnPropertyChanged("SelectedEmployee");
+                OnPropertyChanged("CanAddEmployee");
             }
         }
 
@@ -220,7 +221,7 @@ namespace TestWO.ViewModels
             set
             {
                 _selectedCustomer = value;
-                OnPropertyChanged();
+                OnPropertyChanged("SelectedCustomer");
             }
         }
 
@@ -232,7 +233,8 @@ namespace TestWO.ViewModels
             set
             {
                 _selectedProduct = value;
-                OnPropertyChanged();
+                OnPropertyChanged("SelectedProduct");
+                OnPropertyChanged("CanAddPart");
             }
         }
 
@@ -244,7 +246,7 @@ namespace TestWO.ViewModels
             set
             {
                 _selectedImage = value;
-                OnPropertyChanged();
+                OnPropertyChanged("SelectedImage");
             }
         }
 
@@ -256,7 +258,7 @@ namespace TestWO.ViewModels
             set
             {
                 _partsCart = value;
-                OnPropertyChanged();
+                OnPropertyChanged("PartsCart");
             }
         }
 
@@ -268,7 +270,7 @@ namespace TestWO.ViewModels
             set
             {
                 _employeeCart = value;
-                OnPropertyChanged();
+                OnPropertyChanged("EmployeeCart");
             }
         }
 
@@ -280,7 +282,7 @@ namespace TestWO.ViewModels
             set
             {
                 _imagesCart = value;
-                OnPropertyChanged();
+                OnPropertyChanged("ImagesCart");
 
             }
         }
@@ -424,12 +426,31 @@ namespace TestWO.ViewModels
 
             foreach (var item in PartsCart)
             {
-                workOrder.WorkOrderDetails.Add(new WorkOrderDetailsModel
+                workOrder.WorkOrderItem.Add(new WorkOrderItemModel
                 {
                     ProductId = item.Product.ProductId,
                     ProductQuantity = item.ProductQuantity
                 });
             }
+            foreach (var item in EmployeeCart)
+            {
+                workOrder.WorkOrderEmployee.Add(new WorkOrderEmployeeDBModel
+                {
+                    EmployeeId = item.Employee.EmployeeId
+                });
+            }
+            //foreach (var item in ImagesCart)
+            //{
+            //    workOrder.WorkOrderImage.Add(new WorkOrderImageModel
+            //    {
+            //        ImageFileName = item.Image.ImageFileName,
+            //        ImageData = item.Image.ImageData
+            //    });
+            //}
+            workOrder.CustomerId = SelectedCustomer.CustomerId;
+            workOrder.WorkDescription = WorkDescription;
+            workOrder.StartTime = StartTime;
+            workOrder.EndTime = EndTime;
 
             await _workOrderEndpoint.PostWorkOrder(workOrder);
 

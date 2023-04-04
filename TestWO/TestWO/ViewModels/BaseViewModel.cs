@@ -10,7 +10,7 @@ namespace TestWO.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>();
+        public IDataStore<ViewWorkOrderModel> DataStore => DependencyService.Get<IDataStore<ViewWorkOrderModel>>();
 
         bool isBusy = false;
         public bool IsBusy

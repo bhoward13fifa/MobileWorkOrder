@@ -9,6 +9,7 @@ namespace TestWO.Models
     public class WorkOrderItemModel
     {
         public ProductModel Product { get; set; }
+        public string ProductId { get; set; }
 
         public int ProductQuantity { get; set; }
     }

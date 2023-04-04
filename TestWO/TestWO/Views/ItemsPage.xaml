@@ -4,11 +4,11 @@
              x:Class="TestWO.Views.ItemsPage"
              Title="{Binding Title}"
              xmlns:local="clr-namespace:TestWO.ViewModels"  
-             xmlns:model="clr-namespace:TestWO.Models"  
+             xmlns:model="clr-namespace:TestWO.Models" x:DataType="local:ItemsViewModel"
              x:Name="BrowseItemsPage">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add" Command="{Binding AddItemCommand}" />
+        <ToolbarItem Text="Create New" Command="{Binding AddItemCommand}" />
     </ContentPage.ToolbarItems>
     <!--
       x:DataType enables compiled bindings for better performance and compile time validation of binding expressions.
@@ -16,16 +16,16 @@
     -->
     <RefreshView x:DataType="local:ItemsViewModel" Command="{Binding LoadItemsCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
         <CollectionView x:Name="ItemsListView"
-                ItemsSource="{Binding Items}"
+                ItemsSource="{Binding WorkOrders}"
                 SelectionMode="None">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <StackLayout Padding="10" x:DataType="model:Item">
-                        <Label Text="{Binding Text}" 
+                    <StackLayout Padding="10" x:DataType="model:ViewWorkOrderModel">
+                        <Label Text="{Binding Display}" 
                             LineBreakMode="NoWrap" 
                             Style="{DynamicResource ListItemTextStyle}" 
                             FontSize="16" />
-                        <Label Text="{Binding Description}" 
+                        <Label Text="{Binding Date}" 
                             LineBreakMode="NoWrap"
                             Style="{DynamicResource ListItemDetailTextStyle}"
                             FontSize="13" />

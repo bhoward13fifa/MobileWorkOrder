@@ -1,113 +1,94 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:dxg="http://schemas.devexpress.com/xamarin/2014/forms/datagrid"
+             xmlns:dg="clr-namespace:Xamarin.Forms.DataGrid;assembly=Xamarin.Forms.DataGrid"
              x:Class="TestWO.Views.NewWorkOrderPage"
              Shell.PresentationMode="ModalAnimated"
              Title="New Work Order"
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
-             xmlns:viewModel="clr-namespace:TestWO.ViewModels"
+             xmlns:viewModel="clr-namespace:TestWO.ViewModels" xmlns:local="clr-namespace:TestWO.Services"
              ios:Page.UseSafeArea="true">
     <ContentPage.BindingContext>
         <viewModel:NewWorkOrderViewModel/>
     </ContentPage.BindingContext>
     <ContentPage.Content>
         <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="200" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="175"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="auto"/>
-                </Grid.ColumnDefinitions>
-                <!--Column 0-->
-                <Label Text="Employees" Grid.Row="0" Grid.Column="0" 
-                           FontSize="Medium" />
-                <ListView Grid.Row="1"
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="200" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="175"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <!--Column 0-->
+            <ListView Grid.Row="3"
                           ItemsSource="{Binding EmployeeCart}"
                           Grid.RowSpan="2" Grid.Column="0">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <TextCell Text="{Binding DisplayName}"/>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-                <Button x:Name="AddEmployee" Command="{Binding AddEmployee}" Text="Add Employee"
-                        Grid.Row="3" Grid.Column="0"/>
-                <Button x:Name="AddPart" Command="{Binding AddPart}" Text="Add Part" 
-                        Grid.Row="4" Grid.Column="0"/>
-                <Picker Title="Add Employee" Grid.Row="5" Grid.Column="0"
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding DisplayName}"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Button x:Name="AddEmployee" Command="{Binding AddEmployee}" Text="Add Employee"
+                        IsEnabled="{Binding CanAddEmployee}" Grid.Row="4" Grid.Column="1"/>
+            <Button x:Name="AddPart" Command="{Binding AddPart}" Text="Add Part" 
+                        IsEnabled="{Binding CanAddPart}" Grid.Row="6" Grid.ColumnSpan="2"/>
+            <Picker Title="Add Employee" Grid.Row="3" Grid.Column="1"
                         ItemsSource="{Binding Employees}"
                         ItemDisplayBinding="{Binding SelectionName}"
                         SelectedItem="{Binding SelectedEmployee}"/>
-                <!--Column 1-->
-                <Picker Title="Customer" Grid.Row="0" Grid.Column="1"
+            <!--Column 1-->
+            <Picker Title="Customer" Grid.Row="0" Grid.ColumnSpan="2"
                         ItemsSource="{Binding Customers}"
                         ItemDisplayBinding="{Binding CustomerName}"
                         SelectedItem="{Binding SelectedCustomer}"/>
-                <Label Text="Start Time" Grid.Row="1" Grid.Column="1"/>
-                <TimePicker Grid.Row="2" Grid.Column="1"  Time="{Binding StartTime}"/>
-                <Label Text="End Time" Grid.Row="3" Grid.Column="1"/>
-                <TimePicker Grid.Row="4" Grid.Column="1" Time="{Binding EndTime}"/>
-                <Picker Title="Add Part" Grid.Row="5" Grid.Column="1"
+            <Label Text="Start Time" Grid.Row="1" Grid.Column="0"/>
+            <local:DateTimePicker DateTime="{Binding StartTime}" Grid.Row="2" Grid.Column="0" StringFormat="dd-MM-yyyy HH:mm"></local:DateTimePicker>
+            <Label Text="End Time" Grid.Row="1" Grid.Column="1"/>
+            <local:DateTimePicker DateTime="{Binding EndTime}" Grid.Row="2" Grid.Column="1" StringFormat="dd-MM-yyyy HH:mm"></local:DateTimePicker>
+            <Picker Title="Add Part" Grid.Row="5" Grid.ColumnSpan="2"
                         ItemsSource="{Binding Products}"
                         ItemDisplayBinding="{Binding ProductName}"
                         SelectedItem="{Binding SelectedProduct}"/>
-                <!--Both Columns-->
-            <dxg:DataGridView x:Name="dataGrid" ItemsSource="{Binding PartsCart}"
-                              Margin="20,0,0,0" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="6">
-                <dxg:DataGridView.Columns>
-                    <dxg:TemplateColumn FieldName="SKU">
-                        <dxg:TemplateColumn.DisplayTemplate>
+            <!--Both Columns-->
+            <dg:DataGrid x:Name="dataGrid" ItemsSource="{Binding Path=PartsCart}" SelectionEnabled="True"
+                             Margin="20,0,0,0" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="7"
+                             RowHeight="70" HeaderHeight="50" BorderColor="#CCCCCC" HeaderBackground="#E0E6F8">
+                <dg:DataGrid.Columns>
+                    <dg:DataGridColumn Title="SKU" PropertyName="Product.ProductId"/>
+                    <dg:DataGridColumn Title="Part" PropertyName="Product.ProductName"/>
+                    <dg:DataGridColumn Title="Description" PropertyName="Product.Description"/>
+                    <dg:DataGridColumn Title="Quantity">
+                        <dg:DataGridColumn.CellTemplate>
                             <DataTemplate>
-                                <Label Text="{Binding Product.ProductId}"/>
+                                <ContentView HorizontalOptions="Fill" VerticalOptions="Fill">
+                                    <Entry Text="{Binding ProductQuantity}" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                </ContentView>
                             </DataTemplate>
-                        </dxg:TemplateColumn.DisplayTemplate>
-                    </dxg:TemplateColumn>
-                    <dxg:TemplateColumn FieldName="Part">
-                        <dxg:TemplateColumn.DisplayTemplate>
-                            <DataTemplate>
-                                <Label Text="{Binding Product.ProductName}"/>
-                            </DataTemplate>
-                        </dxg:TemplateColumn.DisplayTemplate>
-                    </dxg:TemplateColumn>
-                    <dxg:TemplateColumn FieldName="Description">
-                        <dxg:TemplateColumn.DisplayTemplate>
-                            <DataTemplate>
-                                <Label Text="{Binding Product.ProductDescription}"/>
-                            </DataTemplate>
-                        </dxg:TemplateColumn.DisplayTemplate>
-                    </dxg:TemplateColumn>
-                    <dxg:TemplateColumn FieldName="Quantity">
-                        <dxg:TemplateColumn.EditTemplate>
-                            <DataTemplate>
-                                <Entry Text="{Binding Path=ProductQuantity}"/>
-                            </DataTemplate>
-                        </dxg:TemplateColumn.EditTemplate>
-                    </dxg:TemplateColumn>
-                </dxg:DataGridView.Columns>
-            </dxg:DataGridView>
-                <Editor x:Name="WorkDescription" Placeholder="Description" Grid.Column="0"
-                        Grid.ColumnSpan="2" Text="{Binding Path=WorkDescription}" Grid.Row="7"/>
-                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Grid.Row="8">
-                    <Button Text="Cancel" Command="{Binding CancelCommand}" HorizontalOptions="FillAndExpand" Grid.Row="8"></Button>
-                    <Button Text="Add Image" Command="{Binding AddImage}" HorizontalOptions="FillAndExpand" Grid.Row="8"></Button>
-                    <Button Text="Submit" Command="{Binding SubmitCommand}" HorizontalOptions="FillAndExpand" Grid.Row="8"></Button>
-                </StackLayout>
-            </Grid>
+                        </dg:DataGridColumn.CellTemplate>
+                    </dg:DataGridColumn>
+                </dg:DataGrid.Columns>
+            </dg:DataGrid>
+            <Editor x:Name="WorkDescription" Placeholder="Description" Grid.Column="0"
+                            Grid.ColumnSpan="2" Text="{Binding Path=WorkDescription}" Grid.Row="8"/>
+            <Button Text="Cancel" Command="{Binding CancelCommand}" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="10"></Button>
+            <Button Text="Add Image" Command="{Binding AddImage}" HorizontalOptions="FillAndExpand" Grid.ColumnSpan="2" Grid.Row="9"></Button>
+            <Button Text="Submit" Command="{Binding SubmitCommand}" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="10"></Button>
+        </Grid>
     </ContentPage.Content>
     
 </ContentPage>

@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using TestWO.Models;
+using TestWO.Services;
 using TestWO.Views;
 using Xamarin.Forms;
 
@@ -10,35 +13,61 @@ namespace TestWO.ViewModels
 {
     public class ItemsViewModel : BaseViewModel
     {
-        private Item _selectedItem;
+        private WorkOrderDBModel _selectedWorkOrder;
 
-        public ObservableCollection<Item> Items { get; }
+        public ObservableCollection<ViewWorkOrderModel> WorkOrders { get; }
         public Command LoadItemsCommand { get; }
         public Command AddItemCommand { get; }
-        public Command<Item> ItemTapped { get; }
+        public Command<WorkOrderDBModel> WorkOrderTapped { get; }
+
+        IWorkOrderEndpoint _workOrderEndpoint;
+        ICustomerEndpoint _customerEndpoint;
+
+        private BindingList<CustomerModel> _customers;
+
+        public BindingList<CustomerModel> Customers
+        {
+            get { return _customers; }
+            set
+            {
+                _customers = value;
+                OnPropertyChanged("Customers");
+            }
+        }
 
         public ItemsViewModel()
         {
-            Title = "Browse";
-            Items = new ObservableCollection<Item>();
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+            Title = "Work Orders";
 
-            ItemTapped = new Command<Item>(OnItemSelected);
+            WorkOrders = new ObservableCollection<ViewWorkOrderModel>();
+
+            //WorkOrderTapped = new Command<WorkOrderDBModel>(OnItemSelected);
 
             AddItemCommand = new Command(OnAddItem);
+
+            _workOrderEndpoint = DependencyService.Get<IWorkOrderEndpoint>();
+
+            _customerEndpoint = DependencyService.Get<ICustomerEndpoint>();
         }
 
-        async Task ExecuteLoadItemsCommand()
+        public async Task LoadCustomers()
         {
-            IsBusy = true;
+            var customerList = await _customerEndpoint.GetAll();
+            Customers = new BindingList<CustomerModel>(customerList);
+        }
 
+        public async Task LoadWorkOrders()
+        {
             try
             {
-                Items.Clear();
-                var items = await DataStore.GetItemsAsync(true);
-                foreach (var item in items)
+                WorkOrders.Clear();
+                var workOrders = await _workOrderEndpoint.GetAllWorkOrders();
+                foreach (var workOrder in workOrders)
                 {
-                    Items.Add(item);
+                    ViewWorkOrderModel showWorkOrders = new ViewWorkOrderModel();
+                    showWorkOrders.Display = "Work Order # " + workOrder.WorkOrderId.ToString() + "      Customer: " + Customers.FirstOrDefault(x => x.CustomerId == workOrder.CustomerId).CustomerName;
+                    showWorkOrders.Date = "Date: " + workOrder.StartTime.ToString("d");
+                    WorkOrders.Add(showWorkOrders);
                 }
             }
             catch (Exception ex)
@@ -50,20 +79,21 @@ namespace TestWO.ViewModels
                 IsBusy = false;
             }
         }
-
-        public void OnAppearing()
+        public async void OnAppearing()
         {
+            await LoadCustomers();
             IsBusy = true;
-            SelectedItem = null;
+            SelectedWorkOrder = null;
+            await LoadWorkOrders();
         }
 
-        public Item SelectedItem
+        public WorkOrderDBModel SelectedWorkOrder
         {
-            get => _selectedItem;
+            get => _selectedWorkOrder;
             set
             {
-                SetProperty(ref _selectedItem, value);
-                OnItemSelected(value);
+                SetProperty(ref _selectedWorkOrder, value);
+                //OnItemSelected(value);
             }
         }
 
@@ -72,13 +102,13 @@ namespace TestWO.ViewModels
             await Shell.Current.GoToAsync(nameof(NewWorkOrderPage));
         }
 
-        async void OnItemSelected(Item item)
-        {
-            if (item == null)
-                return;
+        //async void OnItemSelected(WorkOrderDBModel workOrder)
+        //{
+        //    if (workOrder == null)
+        //        return;
 
-            // This will push the ItemDetailPage onto the navigation stack
-            await Shell.Current.GoToAsync($"{nameof(ItemDetailPage)}?{nameof(ItemDetailViewModel.ItemId)}={item.Id}");
-        }
+        //    // This will push the ItemDetailPage onto the navigation stack
+        //    await Shell.Current.GoToAsync($"{nameof(ItemDetailPage)}?{nameof(ItemDetailViewModel.ItemId)}={workOrder.WorkOrderId}");
+        //}
     }
 }

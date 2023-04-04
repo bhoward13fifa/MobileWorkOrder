@@ -67,15 +67,26 @@
     <Build Include="dbo\Tables\Products.sql" />
     <Build Include="dbo\Tables\User.sql" />
     <Build Include="dbo\Tables\WorkOrder.sql" />
-    <Build Include="dbo\Tables\WorkOrderDetails.sql" />
+    <Build Include="dbo\Tables\WorkOrderItems.sql" />
     <Build Include="dbo\Tables\WorkOrderEmployees.sql" />
     <Build Include="dbo\Stored Procedures\spCustomer_Lookup.sql" />
     <Build Include="dbo\Stored Procedures\spEmployee_Lookup.sql" />
     <Build Include="dbo\Stored Procedures\spProducts_GetById.sql" />
     <Build Include="dbo\Stored Procedures\spProducts_Lookup.sql" />
     <Build Include="dbo\Stored Procedures\spUserLookup.sql" />
+    <Build Include="dbo\Stored Procedures\spWorkOrder_Insert.sql" />
+    <Build Include="dbo\Stored Procedures\spWorkOrderItem_Insert.sql" />
+    <Build Include="dbo\Stored Procedures\spWorkOrderEmployee_Insert.sql" />
+    <Build Include="dbo\Stored Procedures\spEmployees_GetById.sql" />
+    <Build Include="dbo\Stored Procedures\spWorkOrder_Lookup.sql" />
+    <Build Include="dbo\Stored Procedures\spWorkOrderImage_Insert.sql" />
+    <Build Include="dbo\Tables\WorkOrderImages.sql" />
+    <Build Include="dbo\Stored Procedures\spWorkOrder_GetAll.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PublishLocations\WorkOrderData.publish.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="WorkOrderData.refactorlog" />
   </ItemGroup>
 </Project>
